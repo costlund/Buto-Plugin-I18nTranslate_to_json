@@ -1,53 +1,77 @@
 readme:
   name: Buto-Plugin-I18nTranslate_to_json
   description: |
-    Translate to json object.
-    Use object in Javascript script.
+    Get i18n into your Javascript code.
   item:
-    -
-      name: Settings
     -
       name: Usage
       description: |
-        Add to code.
+        Create file /element/i18n.yml and add some params.
         ````
-        wfPlugin::includeonce('i18n/translate_to_json');
-        $i18n_translate_to_json = new PluginI18nTranslate_to_json();
+        see_more: See more
+        see_less: See less
         ````
-        Call method get_json with param filename and path to i18n folder.
+        Create file /i18n/sv.yml.
         ````
-        $json_i18n = $i18n_translate_to_json->get_json(__DIR__.'/element/i18n.yml', '/plugin/theme/heartbeat/i18n');
+        See more: Visa mer
+        See less: Visa mindre
         ````
-        Param $json_i18n could return this data for sv translation.
-        ````
-        {"version_lable":"Version \u00e4ndring","version_text":"Denna applikation har blivit uppdaterad. Ni har d\u00e4rf\u00f6r blivit utloggad och beh\u00f6ver starta om applikationen.","Restart":"Starta om","client_lable":"Sessions-\u00e4ndring","client_text":"Det verkar som att ni har tappat eran session. Ni beh\u00f6ver starta om applikationen och logga in igen."}
-        ````
-        Check out plugin theme/heartbeat as an example of using this!
       item:
         -
-          name: filename
+          name: PHP
           description: |
-            Example of data used for filename.
+            Widget where to include your Javascript add this code.
             ````
-            version_lable: Version change
-            version_text: This application have been updated. Therefore you have been signed out and should restart application.
-            Restart: Restart
-            client_lable: Session change
-            client_text: You seems to have lost your session. Therefore you should restart and sign in again.
+            public function widget_include(){
+              /**
+              * i18n
+              */
+              wfPlugin::includeonce('i18n/translate_to_json');
+              $i18n_translate_to_json = new PluginI18nTranslate_to_json();
+              $json_i18n = $i18n_translate_to_json->get_json(__DIR__.'/element/i18n.yml', '/plugin/my/plugin/i18n');
+              /**
+              * element
+              */
+              $element = wfDocument::getElementFromFolder(__DIR__, __FUNCTION__);
+              $element->setByTag(array('script' => "PluginMyPlugin.init($json_i18n)"));
+              wfDocument::renderElement($element);
+            }
             ````
-    -
-      name: Pages
-      item: {  }
-    -
-      name: Widgets
-      item: {  }
-    -
-      name: Event
-      item: {  }
-    -
-      name: Construct
+            File /element/widget_include.yml.
+            ````
+            -
+              type: widget
+              data:
+                plugin: 'wf/embed'
+                method: embed
+                data:
+                  type: script
+                  file: /plugin/element/see_more/js/PluginMyPlugin.js
+            -
+              type: script
+              innerHTML: rs:script
+            ````
+
+
+        -
+          name: Javascript
+          description: |
+            ````
+            function PluginMyPlugin(){
+              this.i18n = {};
+              this.init = function(i18n){
+                this.i18n = i18n;
+                console.log(this.i18n.see_more);
+              }
+            }
+            var PluginMyPlugin = new PluginMyPlugin();
+            ````
     -
       name: Methods
       item:
         -
           name: get_json
+          description: |
+            Params.
+            - filename (file with object params)
+            - path (i18n path)
