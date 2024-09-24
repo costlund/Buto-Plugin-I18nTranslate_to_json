@@ -4,6 +4,10 @@ class PluginI18nTranslate_to_json{
     /**
      * 
      */
+    wfPlugin::includeonce('wf/yml');
+    /**
+     * 
+     */
     $data = new PluginWfYml($filename);
     /**
      * 

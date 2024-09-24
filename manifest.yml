@@ -1,5 +1,9 @@
-version: 1.0.1
+version: 1.0.2
 history:
+  1.0.2:
+    date: '2024-09-24'
+    title: 'Plugin'
+    description: 'Add wf/yml.'
   1.0.1:
     date: '2024-07-16'
     title: 'Readme'
@@ -12,6 +16,9 @@ plugin:
   -
     name: i18n/translate_v1
     version: 1.13.2
+  -
+    name: wf/yml
+    version: 1.9.1
 sys:
   -
     name: mercury
